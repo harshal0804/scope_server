@@ -1,7 +1,7 @@
 // server.js
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt'); // If you run into native issues, consider switching to bcryptjs.
 const bodyParser = require('body-parser');
 const multer = require('multer'); // For file uploads
 const path = require('path');
@@ -179,7 +179,6 @@ app.get('/import', async (req, res) => {
 // New Import Endpoint (for demo)
 app.post('/new_import', (req, res) => {
   const newImport = req.body;
-  // For demo purposes, simply return the newImport (or save to DB)
   res.status(201).json(newImport);
 });
 
@@ -286,11 +285,9 @@ app.post('/distributionadd', async (req, res) => {
 app.post('/distributionadd1', upload.array('files'), async (req, res) => {
   const orderData = req.body;
   const files = req.files;
-
   try {
     const newOrder = new Distribution(orderData);
     await newOrder.save();
-
     if (files && files.length > 0) {
       const filePaths = files.map(file => file.path);
       newOrder.documents = filePaths.map(filePath => ({
@@ -299,7 +296,6 @@ app.post('/distributionadd1', upload.array('files'), async (req, res) => {
       }));
       await newOrder.save();
     }
-
     res.status(200).json({ message: 'Order placed successfully', order: newOrder });
   } catch (error) {
     res.status(500).json({ message: 'Error placing order', error });
@@ -324,7 +320,6 @@ app.post('/upload', upload.array('files'), (req, res) => {
 // Serve Upload Page (GET) for QR Code scanning
 app.get('/upload/:orderId/:trackingId', (req, res) => {
   const { orderId, trackingId } = req.params;
-  
   res.send(`
     <!DOCTYPE html>
     <html lang="en">
