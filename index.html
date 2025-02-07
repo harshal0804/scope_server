@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Upload Documents for Order</title>
+  <style>
+    body {
+      background: #1C1C1C;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #3D4D61;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+    h1 {
+      color: #FFA500; /* Orange */
+      text-align: center;
+    }
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      background: #1C1C1C;
+      color: #ffffff;
+      border: 1px solid #00796B;
+      border-radius: 4px;
+    }
+    button {
+      background: #00796B;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+    button:hover {
+      background: #00695C;
+    }
+    .upload-status {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="uploadTitle">Upload Documents</h1>
+    <p id="orderInfo">Uploading files for order: </p>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label for="files">Select files:</label>
+      <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg" />
+      <button type="submit">Upload Files</button>
+    </form>
+    <div class="upload-status" id="uploadStatus"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Parse URL parameters for orderId and trackingId
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('orderId') || 'Unknown Order';
+      const trackingId = urlParams.get('trackingId') || 'Unknown Tracking';
+
+      // Display order information at the top of the page
+      document.getElementById('orderInfo').textContent = 
+        `Uploading files for Order ID: ${orderId} | Tracking ID: ${trackingId}`;
+      document.getElementById('uploadTitle').textContent = 
+        `Upload Documents for Order ${orderId}`;
+
+      const form = document.getElementById('uploadForm');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const filesInput = document.getElementById('files');
+        const files = filesInput.files;
+        if (files.length === 0) {
+          alert('Please select at least one file.');
+          return;
+        }
+        
+        const formData = new FormData();
+        // Append orderId and trackingId to the form data
+        formData.append('orderId', orderId);
+        formData.append('trackingId', trackingId);
+        // Append each file
+        for (let i = 0; i < files.length; i++) {
+          formData.append('files', files[i]);
+        }
+        
+        // Change the endpoint URL to match your server configuration
+        fetch('https://youruploadsite.com/upload', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById('uploadStatus').textContent =
+              data.message || 'Files uploaded successfully!';
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('uploadStatus').textContent = 'Error uploading files.';
+          });
+      });
+    });
+  </script>
+</body>
+</html>
