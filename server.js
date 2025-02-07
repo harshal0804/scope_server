@@ -1,7 +1,7 @@
 // server.js
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); // If you run into native issues, consider switching to bcryptjs.
+const bcrypt = require('bcryptjs'); // Use bcryptjs instead of bcrypt
 const bodyParser = require('body-parser');
 const multer = require('multer'); // For file uploads
 const path = require('path');

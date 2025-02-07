@@ -98,3 +98,8 @@
 {"level":"info","message":"Distribution order fetched successfully"}
 {"level":"info","message":"Distribution order fetched successfully"}
 {"level":"info","message":"Distribution order fetched successfully"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"Connected to MongoDB"}
+{"level":"info","message":"Server running on port 5000"}
+{"level":"info","message":"Connected to MongoDB"}
