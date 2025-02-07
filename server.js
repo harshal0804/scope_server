@@ -133,6 +133,13 @@ const Distribution = mongoose.model('Distribution', distributionSchema);
 // ----------------------
 
 // Login API
+
+
+app.post('/', async (req, res) => {
+    res.send('Welcome');
+});
+
+
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
